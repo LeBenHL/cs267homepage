@@ -25,7 +25,7 @@
         <div class="panel callout radius">
           <ul class="tabs" data-tab>
             <li class="tab-title active"><a href="#panel1">About Me</a></li>
-            <li class="tab-title"><a href="#panel2">Application</a></li>
+            <li class="tab-title"><a href="#panel2">Smoothed-particle hydrodynamics</a></li>
           </ul>
           </br>
           <div class="panel tabs-content">
@@ -34,11 +34,25 @@
               <p>Hello! I'm Benjamin Le and am a Master of Engineering Student in the Data Science program under the EECS department. I received my undergraduate degree for EECS here at UC Berkeley as well and loved it so much here, that I decided to come back for another go! Beyond my interest in data science and computing, I also enjoy watching my Bay Area sport teams win championships, hiking on clear blue sky days, and taking pictures of beautiful views.</p>
 
               <h3> Research Interests </h3>
-              <p>Although I don't conduct research as a part of my Master's program, my interests lie under the fields of Machine Learning and Large Scale Data Mining and Analysis. Currently, I am working on a Capstone project with 4 others to analyze Online Video Session Data in order to detect anomalies within a video delivery ecosystem and to classify types of online video subscribers.<p>
-              <p>From this class, I hope to understand parallel programing paradigms better to become a better parallel application programmer. I also wish to learn more about parallel distributed frameworks such as Spark and MapReduce. I also look forward to my first experience with GPU programming.</p>
+              <p>Although I don't conduct research as a part of my Master's program, my interests lie under the fields of Machine Learning and Large Scale Data Mining and Analysis. Currently, I am working on a Capstone project with 4 others to analyze Online Video Session Data in order to detect anomalies within a video delivery ecosystem and to classify types of online video subscribers. I also enjoyed coding simulations alot during my time in CS 184, the undergraduate graphics course at Berkeley.<p>
+              <p>From this class, I hope to understand parallel programing paradigms better to become a better parallel application developer. I also wish to learn more about parallel distributed frameworks such as Spark and MapReduce. I also look forward to my first experience with GPU programming.</p>
             </div>
             <div class="content" id="panel2">
-              <p>This is the second panel of the basic tab example. This is the second panel of the basic tab example.</p>
+              <h3> Smoothed-particle hydrodynamics </h3>
+              <p>Smoothed-particle hydrodynamics(SPH) is a method for simulating fluid flows. In SPH, a fluid is represented by a discrete set of particles. Each particle stores information such as mass, position, and velocity and together they represent scalar and vector fields of simulated field quantites of the fluid. At each timestep, each particle interacts with each other particle simulating the forces of nature and new positions/velocities are calculated. Utilizing the Navier–Stokes equations to describe the motion of fluid flows, the forces from viscosity, pressure, and gravity are simulated on each particle pair.</p>
+              <p> In a thesis by Mattias Linde, he explores scaling the standard SPH algorithm to run on a parallel distributed system. As more particles are introduced into a simulation to increase the volume or resolution of the fluid, simulated interactions between millions of particles becomes computationally intensive. To divide the work among multiple machines, the problem is spatially decomposed into boxes that contain particles. Each box is assigned to a separate machine. Each machine simulates particle interaction in parallel, communicating information about neighboring particles with each other when necessary. In order to load balance the problem, box boundaries are redrawn at each timestep of the simulation to maintain an balanced number of particles per box.</p>
+              <p>
+              The fluid simulation was run on a 192 node cluster with AMD 248 Opteron CPU's and 8GB of RAM per node, far from the computing capacities of machines on the Top 500 list. In a 200,000 particle system, the simulation took 9762.5 seconds to finish on a single machine and 578.64 seconds on 25 machines. Increasing computing 25x only increased performance 16.8x representing 67% efficiency being achieved on the 25 machine cluster.
+              </p>
+              <p>
+              The parallel algorithm scaled reasonably well on multiple machines. When analyzing how much time was spent at each stage of the algorithm, Linde found that 40% of the time was spent on communicating particle information between machines. Because, particles need to commmunicate information about neighboring particles before being able to simulate fluid flow with the Naiver-Stokes equations, the communication step acts as a natural barrier. Linde hypothesized that because this communication is lightweight, perhaps some machines were stuck in the communication stage for a long time waiting for neighbors to reach the same stage. This implies that the problem is not being load balanced well and a better algorithm is needed to reduce skew between machines. Nevertheless, Linde was able to achieve quite substantial speedup from his initial implementation of parallel SPH code.
+              </p>
+              <h3> References </h3>
+              <ul>
+                <li>Linde, M. (2007). Parallel Simulation of Particle Fluids <a class="external free" href="http://www8.cs.umu.se/education/examina/Rapporter/MattiasLinde.pdf">http://www8.cs.umu.se/education/examina/Rapporter/MattiasLinde.pdf</a></li>
+                <li>Joselli, M., & Clua, E. (2009, October). GpuWars: design and implementation of a GPGPU game. In Games and Digital Entertainment (SBGAMES), 2009 VIII Brazilian Symposium on (pp. 132-140). IEEE. <a class="external free" href="http://sa08.idav.ucdavis.edu/CUDA_physx_fluids.Harris.pdf">http://sa08.idav.ucdavis.edu/CUDA_physx_fluids.Harris.pdf</a></li>
+                <li>Smoothed-particle hydrodynamics. (2015, January 16).  In <i>Wikipedia, The Free Encyclopedia</i>. Retrieved 20:59, January 23, 2015, from <a class="external free" href="http://en.wikipedia.org/w/index.php?title=Smoothed-particle_hydrodynamics&amp;oldid=642761766">http://en.wikipedia.org/w/index.php?title=Smoothed-particle_hydrodynamics&amp;oldid=642761766</a></li>
+              </ul>
             </div>
           </div>
         </div>
